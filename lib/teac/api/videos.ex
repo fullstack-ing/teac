@@ -19,6 +19,7 @@ defmodule Teac.Api.Videos do
   def delete(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.fetch!(opts, :client_id)
+    id = Keyword.fetch!(opts, :id)
 
     case Req.delete!(Teac.Api.api_uri() <> "videos",
            headers: [
@@ -26,8 +27,7 @@ defmodule Teac.Api.Videos do
              {"Client-Id", client_id},
              {"Content-Type", "application/x-www-form-urlencoded"}
            ],
-           form: [],
-           decode_body: :json
+           params: [id: id]
          ) do
       %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
       %Req.Response{body: body} -> {:error, body}
