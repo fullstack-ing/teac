@@ -2,14 +2,19 @@ defmodule Teac.Api.Channels do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.fetch!(opts, :client_id)
-    broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
+
+    broadcaster_ids =
+      opts |> Keyword.fetch!(:broadcaster_ids) |> List.wrap() |> Enum.map(&to_string/1)
+
+    params =
+      Enum.map(broadcaster_ids, &{:broadcaster_id, &1})
 
     case Req.get!(Teac.Api.api_uri() <> "channels",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
            ],
-           params: [broadcaster_id: broadcaster_id]
+           params: params
          ) do
       %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
       %Req.Response{body: body} -> {:error, body}
