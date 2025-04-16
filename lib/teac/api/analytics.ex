@@ -60,7 +60,6 @@ defmodule Teac.Api.Analytics do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
       client_id = Keyword.fetch!(opts, :client_id)
-      dbg(Teac.Api.api_uri() <> "analytics/games")
 
       case Req.get!(Teac.Api.api_uri() <> "analytics/games",
              headers: [

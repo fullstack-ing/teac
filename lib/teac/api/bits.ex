@@ -59,8 +59,7 @@ defmodule Teac.Api.Bits do
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
-             ],
-             params: []
+             ]
            ) do
         %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
         %Req.Response{body: body} -> {:error, body}
