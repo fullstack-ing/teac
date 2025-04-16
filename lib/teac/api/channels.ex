@@ -19,6 +19,7 @@ defmodule Teac.Api.Channels do
   def patch(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.fetch!(opts, :client_id)
+    broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
     case Req.patch!(Teac.Api.api_uri() <> "channels",
            headers: [
@@ -26,7 +27,8 @@ defmodule Teac.Api.Channels do
              {"Client-Id", client_id},
              {"Content-Type", "application/x-www-form-urlencoded"}
            ],
-           form: [],
+           params: [broadcaster_id: broadcaster_id],
+           form: [title: "asdf"],
            decode_body: :json
          ) do
       %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}

@@ -119,8 +119,7 @@ defmodule Teac.Api.ChannelPoints do
         true ->
           # Convert to repeated query params
           params =
-            (Enum.map(ids, &{:id, &1}) ++ params)
-            |> dbg()
+            Enum.map(ids, &{:id, &1}) ++ params
 
           case Req.get!(Teac.Api.api_uri() <> "channel_points/custom_rewards/redemptions",
                  headers: [
