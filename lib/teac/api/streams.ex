@@ -38,13 +38,14 @@ defmodule Teac.Api.Streams do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
       client_id = Keyword.fetch!(opts, :client_id)
+      broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
       case Req.get!(Teac.Api.api_uri() <> "streams/key",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
              ],
-             params: []
+             params: [broadcaster_id: broadcaster_id]
            ) do
         %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
         %Req.Response{body: body} -> {:error, body}
@@ -81,24 +82,6 @@ defmodule Teac.Api.Streams do
              ],
              form: [],
              decode_body: :json
-           ) do
-        %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-        %Req.Response{body: body} -> {:error, body}
-      end
-    end
-  end
-
-  defmodule Tags do
-    def get(opts) do
-      token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
-
-      case Req.get!(Teac.Api.api_uri() <> "streams/tags",
-             headers: [
-               {"Authorization", "Bearer #{token}"},
-               {"Client-Id", client_id}
-             ],
-             params: []
            ) do
         %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
         %Req.Response{body: body} -> {:error, body}
