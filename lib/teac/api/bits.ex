@@ -55,11 +55,18 @@ defmodule Teac.Api.Bits do
       token = Keyword.fetch!(opts, :token)
       client_id = Keyword.fetch!(opts, :client_id)
 
+      params =
+        case Keyword.get(opts, :broadcaster_id) do
+          nil -> []
+          broadcaster_id -> [broadcaster_id: broadcaster_id]
+        end
+
       case Req.get!(Teac.Api.api_uri() <> "bits/cheermotes",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
-             ]
+             ],
+             params: params
            ) do
         %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
         %Req.Response{body: body} -> {:error, body}
