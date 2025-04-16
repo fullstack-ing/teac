@@ -19,8 +19,8 @@ defmodule Teac.Api.Users do
     client_id = Keyword.fetch!(opts, :client_id)
 
     # Normalize parameters to lists of strings
-    ids = opts |> Keyword.get(:id, []) |> List.wrap() |> Enum.map(&to_string/1)
-    logins = opts |> Keyword.get(:login, []) |> List.wrap() |> Enum.map(&to_string/1)
+    ids = opts |> Keyword.get(:ids, []) |> List.wrap() |> Enum.map(&to_string/1)
+    logins = opts |> Keyword.get(:logins, []) |> List.wrap() |> Enum.map(&to_string/1)
 
     total = length(ids) + length(logins)
 
