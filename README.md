@@ -1,8 +1,23 @@
 # Teac
 
-**TODO: Add description**
+Twitch Elxiir API Client
+An elixir client for Twitch's REST and WebSocket API.
+
 ## Roadmap of API Endpoints: (Tested)
 All of the following have been mapped, just not finshed complete with all optional arguments. Some of these endpoints will work but still need work to flush out the whole list of options for the given endpoint.
+
+### Mock Server Endpoints
+- [x] App Token for Twitch Mock Server
+- [x] User Token for Twitch Mock Server
+- [x] Unit Mock Endpoints
+- [x] Helpers via .iex.exs
+
+### Auth (via code grant flow)
+- [ ] App Token for Twitch Auth Server
+- [ ] User Token for Twitch Auth Server
+
+### Scopes
+- [x] All scopes have been implemented
 
 ### Analytics
 - [ ] Extensions.get()
