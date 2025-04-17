@@ -24,7 +24,7 @@ All of the following have been mapped, just not finshed complete with all option
 - [ ] Game.get()
 
 ### Bits
-- [ ] Cheermotes.get()
+- [x] Cheermotes.get()
 - [ ] Extensions.get()
 - [ ] Extensions.put()
 - [ ] Leaderboard.get()
