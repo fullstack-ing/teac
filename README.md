@@ -3,18 +3,34 @@
 Twitch Elxiir API Client
 An elixir client for Twitch's REST and WebSocket API.
 
-## Roadmap of API Endpoints: (Tested)
-All of the following have been mapped, just not finshed complete with all optional arguments. Some of these endpoints will work but still need work to flush out the whole list of options for the given endpoint.
+## Installation
 
-### Mock Server Endpoints
-- [x] App Token for Twitch Mock Server
-- [x] User Token for Twitch Mock Server
-- [x] Unit Mock Endpoints
-- [x] Helpers via .iex.exs
+This is currently a work in progress.
 
-### Auth (via code grant flow)
-- [ ] App Token for Twitch Auth Server
-- [ ] User Token for Twitch Auth Server
+```elixir
+def deps do
+  [
+    {:teac, git: "https://github.com/deadego/teac"}
+  ]
+end
+```
+
+## Using
+Assuming you have a Twitch mock server running to get the auth.
+```
+{:ok, [%{"ID" => client_id, "Secret" => client_secret}]} = Teac.MockApi.clients()
+
+{:ok, %{"access_token" => access_token}} =
+  Teac.MockAuth.fetch_app_access_token(client_id: client_id, client_secret: client_secret)
+
+opts = [token: access_token, client_id: client_id, client_secret: client_secret]
+{:ok, data} = Teac.Api.Bits.Cheermotes.get(opts)
+```
+
+Every endpoint in the `Teac.Api` module takes an opts Keyword list.
+By default most will require a `token` and `client_id`.
+
+All the other options are also just passed in the Keyword list (opts).
 
 ### Scopes
 - [x] All scopes have been implemented
@@ -228,20 +244,3 @@ https://dev.twitch.tv/docs/cli/
 
 * Start a mock twitch server.
   `twitch mock-api serve`
-
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `teac` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:teac, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/teac>.
