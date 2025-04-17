@@ -15,6 +15,9 @@ def deps do
 end
 ```
 
+## Example Application using this lib.
+https://github.com/deadego/teac_example
+
 ## Using
 Assuming you have a Twitch mock server running to get the auth.
 ```
