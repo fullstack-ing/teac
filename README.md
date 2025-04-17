@@ -2,6 +2,7 @@
 
 **TODO: Add description**
 ## Roadmap of API Endpoints: (Tested)
+All of the following have been mapped, just not finshed complete with all optional arguments. Some of these endpoints will work but still need work to flush out the whole list of options for the given endpoint.
 
 ### Analytics
 - [ ] Extensions.get()
