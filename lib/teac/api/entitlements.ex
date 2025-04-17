@@ -2,9 +2,9 @@ defmodule Teac.Api.Entitlements do
   defmodule Drops do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "entitlements/drops",
+      case Req.get!(Teac.api_uri() <> "entitlements/drops",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -18,9 +18,9 @@ defmodule Teac.Api.Entitlements do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "entitlements/drops",
+      case Req.patch!(Teac.api_uri() <> "entitlements/drops",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},

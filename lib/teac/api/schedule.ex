@@ -1,10 +1,10 @@
 defmodule Teac.Api.Schedule do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
     broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-    case Req.get!(Teac.Api.api_uri() <> "schedule",
+    case Req.get!(Teac.api_uri() <> "schedule",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
@@ -18,9 +18,9 @@ defmodule Teac.Api.Schedule do
 
   def delete(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.delete!(Teac.Api.api_uri() <> "schedule/",
+    case Req.delete!(Teac.api_uri() <> "schedule/",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},
@@ -37,9 +37,9 @@ defmodule Teac.Api.Schedule do
   defmodule ICalendar do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "schedule/icalendar",
+      case Req.get!(Teac.api_uri() <> "schedule/icalendar",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -55,9 +55,9 @@ defmodule Teac.Api.Schedule do
   defmodule Segment do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "schedule/segment",
+      case Req.post!(Teac.api_uri() <> "schedule/segment",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -73,9 +73,9 @@ defmodule Teac.Api.Schedule do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "schedule/segment",
+      case Req.patch!(Teac.api_uri() <> "schedule/segment",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -93,9 +93,9 @@ defmodule Teac.Api.Schedule do
   defmodule Settings do
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "schedule/settings",
+      case Req.patch!(Teac.api_uri() <> "schedule/settings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},

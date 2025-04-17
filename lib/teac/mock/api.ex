@@ -1,4 +1,4 @@
-defmodule Teac.MockApi do
+defmodule Teac.Mock.Api do
   @moduledoc """
   This module is used for all the /unit enpoints on the mock server
   """

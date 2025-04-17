@@ -1,7 +1,7 @@
 defmodule Teac.Api.Channels do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
     broadcaster_ids =
       opts |> Keyword.fetch!(:broadcaster_ids) |> List.wrap() |> Enum.map(&to_string/1)
@@ -9,7 +9,7 @@ defmodule Teac.Api.Channels do
     params =
       Enum.map(broadcaster_ids, &{:broadcaster_id, &1})
 
-    case Req.get!(Teac.Api.api_uri() <> "channels",
+    case Req.get!(Teac.api_uri() <> "channels",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
@@ -23,10 +23,10 @@ defmodule Teac.Api.Channels do
 
   def patch(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
     broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-    case Req.patch!(Teac.Api.api_uri() <> "channels",
+    case Req.patch!(Teac.api_uri() <> "channels",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},
@@ -44,9 +44,9 @@ defmodule Teac.Api.Channels do
   defmodule Channels.Ads do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "channels/ads",
+      case Req.get!(Teac.api_uri() <> "channels/ads",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -61,9 +61,9 @@ defmodule Teac.Api.Channels do
     defmodule Ads.Schedule.Snooze do
       def post(opts) do
         token = Keyword.fetch!(opts, :token)
-        client_id = Keyword.fetch!(opts, :client_id)
+        client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-        case Req.post!(Teac.Api.api_uri() <> "channels/ads/schedule/snooze",
+        case Req.post!(Teac.api_uri() <> "channels/ads/schedule/snooze",
                headers: [
                  {"Authorization", "Bearer #{token}"},
                  {"Client-Id", client_id},
@@ -82,9 +82,9 @@ defmodule Teac.Api.Channels do
   defmodule Commercial do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "channels/commercial",
+      case Req.post!(Teac.api_uri() <> "channels/commercial",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -102,10 +102,10 @@ defmodule Teac.Api.Channels do
   defmodule Editors do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-      case Req.get!(Teac.Api.api_uri() <> "channels/editors",
+      case Req.get!(Teac.api_uri() <> "channels/editors",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -121,7 +121,7 @@ defmodule Teac.Api.Channels do
   defmodule Followed do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       user_id = Keyword.fetch!(opts, :user_id)
       params = [user_id: user_id]
 
@@ -131,7 +131,7 @@ defmodule Teac.Api.Channels do
           broadcaster_id -> params ++ [broadcaster_id: broadcaster_id]
         end
 
-      case Req.get!(Teac.Api.api_uri() <> "channels/followed",
+      case Req.get!(Teac.api_uri() <> "channels/followed",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -147,7 +147,7 @@ defmodule Teac.Api.Channels do
   defmodule Followers do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
       params = [broadcaster_id: broadcaster_id]
 
@@ -157,7 +157,7 @@ defmodule Teac.Api.Channels do
           user_id -> params ++ [user_id: user_id]
         end
 
-      case Req.get!(Teac.Api.api_uri() <> "channels/followers",
+      case Req.get!(Teac.api_uri() <> "channels/followers",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -173,9 +173,9 @@ defmodule Teac.Api.Channels do
   defmodule Vips do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "channels/vips",
+      case Req.get!(Teac.api_uri() <> "channels/vips",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -189,9 +189,9 @@ defmodule Teac.Api.Channels do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "channels/vips",
+      case Req.delete!(Teac.api_uri() <> "channels/vips",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},

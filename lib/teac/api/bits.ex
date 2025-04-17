@@ -2,7 +2,7 @@ defmodule Teac.Api.Bits do
   defmodule Leaderboard do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
       params = []
 
@@ -37,7 +37,7 @@ defmodule Teac.Api.Bits do
           user_id -> params ++ [user_id: user_id]
         end
 
-      case Req.get!(Teac.Api.api_uri() <> "bits/leaderboard",
+      case Req.get!(Teac.api_uri() <> "bits/leaderboard",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -53,7 +53,7 @@ defmodule Teac.Api.Bits do
   defmodule Cheermotes do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
       params =
         case Keyword.get(opts, :broadcaster_id) do
@@ -61,7 +61,7 @@ defmodule Teac.Api.Bits do
           broadcaster_id -> [broadcaster_id: broadcaster_id]
         end
 
-      case Req.get!(Teac.Api.api_uri() <> "bits/cheermotes",
+      case Req.get!(Teac.api_uri() <> "bits/cheermotes",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -77,9 +77,9 @@ defmodule Teac.Api.Bits do
   defmodule Extensions do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "bits/extensions",
+      case Req.get!(Teac.api_uri() <> "bits/extensions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -93,9 +93,9 @@ defmodule Teac.Api.Bits do
 
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "bits/extensions",
+      case Req.put!(Teac.api_uri() <> "bits/extensions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},

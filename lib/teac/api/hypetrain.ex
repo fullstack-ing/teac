@@ -1,9 +1,9 @@
 defmodule Teac.Api.Hypetrain do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.Api.api_uri() <> "hypetrain/events",
+    case Req.get!(Teac.api_uri() <> "hypetrain/events",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}

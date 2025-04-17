@@ -1,10 +1,10 @@
 defmodule Teac.Api.Videos do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
     user_id = Keyword.fetch!(opts, :user_id)
 
-    case Req.get!(Teac.Api.api_uri() <> "videos",
+    case Req.get!(Teac.api_uri() <> "videos",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
@@ -18,10 +18,10 @@ defmodule Teac.Api.Videos do
 
   def delete(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
     id = Keyword.fetch!(opts, :id)
 
-    case Req.delete!(Teac.Api.api_uri() <> "videos",
+    case Req.delete!(Teac.api_uri() <> "videos",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},

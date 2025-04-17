@@ -1,9 +1,9 @@
 defmodule Teac.Api.ContentClassificationLabels do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.Api.api_uri() <> "content_classification_labels",
+    case Req.get!(Teac.api_uri() <> "content_classification_labels",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}

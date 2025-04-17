@@ -1,7 +1,7 @@
 defmodule Teac.Api.Games do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
     ids = opts |> Keyword.get(:ids, []) |> List.wrap() |> Enum.map(&to_string/1)
     names = opts |> Keyword.get(:names, []) |> List.wrap() |> Enum.map(&to_string/1)
@@ -20,7 +20,7 @@ defmodule Teac.Api.Games do
             Enum.map(names, &{:name, &1}) ++
             Enum.map(igdb_id, &{:igdb_id, &1})
 
-        case Req.get!(Teac.Api.api_uri() <> "games",
+        case Req.get!(Teac.api_uri() <> "games",
                headers: [
                  {"Authorization", "Bearer #{token}"},
                  {"Client-Id", client_id}
@@ -36,9 +36,9 @@ defmodule Teac.Api.Games do
   defmodule Top do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "games/top",
+      case Req.get!(Teac.api_uri() <> "games/top",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}

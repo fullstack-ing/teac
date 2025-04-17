@@ -12,13 +12,13 @@ defmodule Teac.Api.Chat do
     """
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
       moderator_id = Keyword.fetch!(opts, :moderator_id)
       message = Keyword.fetch!(opts, :message)
       color = Keyword.get(opts, :color, nil)
 
-      case Req.post!(Teac.Api.api_uri() <> "chat/announcements",
+      case Req.post!(Teac.api_uri() <> "chat/announcements",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -50,10 +50,10 @@ defmodule Teac.Api.Chat do
     """
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/badges",
+      case Req.get!(Teac.api_uri() <> "chat/badges",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -79,9 +79,9 @@ defmodule Teac.Api.Chat do
     """
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/badges/global",
+      case Req.get!(Teac.api_uri() <> "chat/badges/global",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -96,9 +96,9 @@ defmodule Teac.Api.Chat do
   defmodule Chatters do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/chatters",
+      case Req.get!(Teac.api_uri() <> "chat/chatters",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -114,9 +114,9 @@ defmodule Teac.Api.Chat do
   defmodule Color do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/color",
+      case Req.get!(Teac.api_uri() <> "chat/color",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -130,9 +130,9 @@ defmodule Teac.Api.Chat do
 
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "chat/color",
+      case Req.put!(Teac.api_uri() <> "chat/color",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -150,10 +150,10 @@ defmodule Teac.Api.Chat do
   defmodule Emotes do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/emotes",
+      case Req.get!(Teac.api_uri() <> "chat/emotes",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -169,10 +169,10 @@ defmodule Teac.Api.Chat do
   defmodule Emotes.Global do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/emotes/global",
+      case Req.get!(Teac.api_uri() <> "chat/emotes/global",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -188,10 +188,10 @@ defmodule Teac.Api.Chat do
   defmodule Emotes.Set do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       emote_set_id = Keyword.fetch!(opts, :emote_set_id)
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/emotes/set",
+      case Req.get!(Teac.api_uri() <> "chat/emotes/set",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -209,9 +209,9 @@ defmodule Teac.Api.Chat do
   defmodule Emotes.User do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/emotes/user",
+      case Req.get!(Teac.api_uri() <> "chat/emotes/user",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -227,13 +227,13 @@ defmodule Teac.Api.Chat do
   defmodule Messages do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       message = Keyword.fetch!(opts, :message)
       broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
       sender_id = Keyword.fetch!(opts, :sender_id)
       reply_parent_message_id = Keyword.get(opts, :reply_parent_message_id)
 
-      case Req.post!(Teac.Api.api_uri() <> "chat/messages",
+      case Req.post!(Teac.api_uri() <> "chat/messages",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -256,10 +256,10 @@ defmodule Teac.Api.Chat do
   defmodule Settings do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-      case Req.get!(Teac.Api.api_uri() <> "chat/settings",
+      case Req.get!(Teac.api_uri() <> "chat/settings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -273,9 +273,9 @@ defmodule Teac.Api.Chat do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "chat/settings",
+      case Req.patch!(Teac.api_uri() <> "chat/settings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -293,9 +293,9 @@ defmodule Teac.Api.Chat do
   defmodule Shoutouts do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "chat/shoutouts",
+      case Req.post!(Teac.api_uri() <> "chat/shoutouts",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},

@@ -1,9 +1,9 @@
 defmodule Teac.Api.Subscriptions do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.Api.api_uri() <> "subscriptions",
+    case Req.get!(Teac.api_uri() <> "subscriptions",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
@@ -19,9 +19,9 @@ end
 defmodule User do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.Api.api_uri() <> "subscriptions/user",
+    case Req.get!(Teac.api_uri() <> "subscriptions/user",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}

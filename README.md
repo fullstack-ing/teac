@@ -1,7 +1,7 @@
 # Teac
 
-Twitch Elxiir API Client
-An elixir client for Twitch's REST and WebSocket API.
+Twitch Elixir API Client
+For Twitch's REST and WebSocket API.
 
 ## Installation
 
@@ -10,13 +10,13 @@ This is currently a work in progress.
 ```elixir
 def deps do
   [
-    {:teac, git: "https://github.com/deadego/teac"}
+    {:teac, git: "https://github.com/fullstack-ing/teac"}
   ]
 end
 ```
 
 ## Example Application using this lib.
-https://github.com/deadego/teac_example
+https://github.com/fullstack-ing/teac_example
 
 ## Using
 Assuming you have a Twitch mock server running to get the auth.

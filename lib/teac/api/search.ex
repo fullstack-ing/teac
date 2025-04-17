@@ -2,10 +2,10 @@ defmodule Teac.Api.Search do
   defmodule Categories do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       query = Keyword.fetch!(opts, :query)
 
-      case Req.get!(Teac.Api.api_uri() <> "search/categories",
+      case Req.get!(Teac.api_uri() <> "search/categories",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -21,10 +21,10 @@ defmodule Teac.Api.Search do
   defmodule Channels do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       query = Keyword.fetch!(opts, :query)
 
-      case Req.get!(Teac.Api.api_uri() <> "search/channels",
+      case Req.get!(Teac.api_uri() <> "search/channels",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}

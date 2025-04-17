@@ -1,9 +1,9 @@
 defmodule Teac.Api.Teams do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.Api.api_uri() <> "teams",
+    case Req.get!(Teac.api_uri() <> "teams",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
@@ -18,9 +18,9 @@ defmodule Teac.Api.Teams do
   defmodule Channel do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "teams/channel",
+      case Req.get!(Teac.api_uri() <> "teams/channel",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}

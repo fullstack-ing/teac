@@ -2,9 +2,9 @@ defmodule Teac.Api.Charity do
   defmodule Campaigns do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "charity/campaigns",
+      case Req.get!(Teac.api_uri() <> "charity/campaigns",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -20,9 +20,9 @@ defmodule Teac.Api.Charity do
   defmodule Donations do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "charity/donations",
+      case Req.get!(Teac.api_uri() <> "charity/donations",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}

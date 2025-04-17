@@ -1,10 +1,10 @@
 defmodule Teac.Api.SharedChat do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
     broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-    case Req.get!(Teac.Api.api_uri() <> "shared_chat/session",
+    case Req.get!(Teac.api_uri() <> "shared_chat/session",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}

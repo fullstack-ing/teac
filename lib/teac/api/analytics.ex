@@ -34,10 +34,9 @@ defmodule Teac.Api.Analytics do
     """
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
-      dbg(Teac.Api.api_uri() <> "analytics/extensions")
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "analytics/extensions",
+      case Req.get!(Teac.api_uri() <> "analytics/extensions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -59,9 +58,9 @@ defmodule Teac.Api.Analytics do
     """
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "analytics/games",
+      case Req.get!(Teac.api_uri() <> "analytics/games",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}

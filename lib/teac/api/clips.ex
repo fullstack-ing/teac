@@ -1,9 +1,9 @@
 defmodule Teac.Api.Clips do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.Api.api_uri() <> "clips",
+    case Req.get!(Teac.api_uri() <> "clips",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
@@ -17,9 +17,9 @@ defmodule Teac.Api.Clips do
 
   def post(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.post!(Teac.Api.api_uri() <> "clips",
+    case Req.post!(Teac.api_uri() <> "clips",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},

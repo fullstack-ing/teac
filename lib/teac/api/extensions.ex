@@ -1,9 +1,9 @@
 defmodule Teac.Api.Extensions do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.Api.api_uri() <> "extensions",
+    case Req.get!(Teac.api_uri() <> "extensions",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
@@ -18,9 +18,9 @@ defmodule Teac.Api.Extensions do
   defmodule Chat do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "extensions/chat",
+      case Req.post!(Teac.api_uri() <> "extensions/chat",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -38,9 +38,9 @@ defmodule Teac.Api.Extensions do
   defmodule Configurations do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "extensions/configurations",
+      case Req.get!(Teac.api_uri() <> "extensions/configurations",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -54,9 +54,9 @@ defmodule Teac.Api.Extensions do
 
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "extensions/configurations",
+      case Req.put!(Teac.api_uri() <> "extensions/configurations",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -74,9 +74,9 @@ defmodule Teac.Api.Extensions do
   defmodule Live do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "extensions/live",
+      case Req.get!(Teac.api_uri() <> "extensions/live",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -92,9 +92,9 @@ defmodule Teac.Api.Extensions do
   defmodule Jwt.Secrets do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "extensions/jwt/secrets",
+      case Req.get!(Teac.api_uri() <> "extensions/jwt/secrets",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -110,9 +110,9 @@ defmodule Teac.Api.Extensions do
   defmodule PubSub do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "extensions/pubsub",
+      case Req.post!(Teac.api_uri() <> "extensions/pubsub",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -130,9 +130,9 @@ defmodule Teac.Api.Extensions do
   defmodule Released do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "extensions/released",
+      case Req.get!(Teac.api_uri() <> "extensions/released",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -148,9 +148,9 @@ defmodule Teac.Api.Extensions do
   defmodule RequiredConfiguration do
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "extensions/required_configuration",
+      case Req.put!(Teac.api_uri() <> "extensions/required_configuration",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -168,9 +168,9 @@ defmodule Teac.Api.Extensions do
   defmodule Transactions do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "extensions/transactions",
+      case Req.get!(Teac.api_uri() <> "extensions/transactions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}

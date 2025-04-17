@@ -2,9 +2,9 @@ defmodule Teac.Api.Moderation do
   defmodule Automod.Settings do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "moderation/automod/settings",
+      case Req.get!(Teac.api_uri() <> "moderation/automod/settings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -18,9 +18,9 @@ defmodule Teac.Api.Moderation do
 
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "moderation/automod/settings",
+      case Req.put!(Teac.api_uri() <> "moderation/automod/settings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -38,9 +38,9 @@ defmodule Teac.Api.Moderation do
   defmodule Bans do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "moderation/bans",
+      case Req.post!(Teac.api_uri() <> "moderation/bans",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -56,9 +56,9 @@ defmodule Teac.Api.Moderation do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "moderation/bans",
+      case Req.delete!(Teac.api_uri() <> "moderation/bans",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -76,9 +76,9 @@ defmodule Teac.Api.Moderation do
   defmodule Banned do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "moderation/banned",
+      case Req.get!(Teac.api_uri() <> "moderation/banned",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -94,9 +94,9 @@ defmodule Teac.Api.Moderation do
   defmodule BlockedTerms do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "moderation/blocked_terms",
+      case Req.get!(Teac.api_uri() <> "moderation/blocked_terms",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -110,9 +110,9 @@ defmodule Teac.Api.Moderation do
 
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "moderation/blocked_terms",
+      case Req.post!(Teac.api_uri() <> "moderation/blocked_terms",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -128,9 +128,9 @@ defmodule Teac.Api.Moderation do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "moderation/blocked_terms",
+      case Req.delete!(Teac.api_uri() <> "moderation/blocked_terms",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -148,9 +148,9 @@ defmodule Teac.Api.Moderation do
   defmodule Channels do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "moderation/channels",
+      case Req.get!(Teac.api_uri() <> "moderation/channels",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -166,9 +166,9 @@ defmodule Teac.Api.Moderation do
   defmodule Chat do
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "moderation/chat",
+      case Req.delete!(Teac.api_uri() <> "moderation/chat",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -186,9 +186,9 @@ defmodule Teac.Api.Moderation do
   defmodule Snforcements.Status do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "moderation/enforcements/status",
+      case Req.post!(Teac.api_uri() <> "moderation/enforcements/status",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -206,9 +206,9 @@ defmodule Teac.Api.Moderation do
   defmodule Moderators do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "moderation/moderators",
+      case Req.get!(Teac.api_uri() <> "moderation/moderators",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -222,9 +222,9 @@ defmodule Teac.Api.Moderation do
 
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "moderation/moderators",
+      case Req.post!(Teac.api_uri() <> "moderation/moderators",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -240,9 +240,9 @@ defmodule Teac.Api.Moderation do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "moderation/moderators",
+      case Req.delete!(Teac.api_uri() <> "moderation/moderators",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -260,9 +260,9 @@ defmodule Teac.Api.Moderation do
   defmodule ShieldMode do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "moderation/shield_mode",
+      case Req.get!(Teac.api_uri() <> "moderation/shield_mode",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -276,9 +276,9 @@ defmodule Teac.Api.Moderation do
 
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "moderation/shield_mode",
+      case Req.put!(Teac.api_uri() <> "moderation/shield_mode",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -296,9 +296,9 @@ defmodule Teac.Api.Moderation do
   defmodule Warnings do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "moderation/warnings",
+      case Req.post!(Teac.api_uri() <> "moderation/warnings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -316,9 +316,9 @@ defmodule Teac.Api.Moderation do
   defmodule UnbanRequests do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "moderation/unban_requests",
+      case Req.get!(Teac.api_uri() <> "moderation/unban_requests",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -332,9 +332,9 @@ defmodule Teac.Api.Moderation do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "moderation/unban_requests",
+      case Req.patch!(Teac.api_uri() <> "moderation/unban_requests",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},

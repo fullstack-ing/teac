@@ -2,9 +2,9 @@ defmodule Teac.Api.GuestStar do
   defmodule ChannelCettings do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "guest_star/channel_settings",
+      case Req.get!(Teac.api_uri() <> "guest_star/channel_settings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -18,9 +18,9 @@ defmodule Teac.Api.GuestStar do
 
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "guest_star/channel_settings",
+      case Req.put!(Teac.api_uri() <> "guest_star/channel_settings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -38,9 +38,9 @@ defmodule Teac.Api.GuestStar do
   defmodule Invites do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "guest_star/invites",
+      case Req.get!(Teac.api_uri() <> "guest_star/invites",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -54,9 +54,9 @@ defmodule Teac.Api.GuestStar do
 
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "guest_star/invites",
+      case Req.post!(Teac.api_uri() <> "guest_star/invites",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -72,9 +72,9 @@ defmodule Teac.Api.GuestStar do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "guest_star/invites",
+      case Req.delete!(Teac.api_uri() <> "guest_star/invites",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -92,9 +92,9 @@ defmodule Teac.Api.GuestStar do
   defmodule Session do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "guest_star/session",
+      case Req.get!(Teac.api_uri() <> "guest_star/session",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -108,9 +108,9 @@ defmodule Teac.Api.GuestStar do
 
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "guest_star/session",
+      case Req.post!(Teac.api_uri() <> "guest_star/session",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -126,9 +126,9 @@ defmodule Teac.Api.GuestStar do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "guest_star/session",
+      case Req.delete!(Teac.api_uri() <> "guest_star/session",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -146,9 +146,9 @@ defmodule Teac.Api.GuestStar do
   defmodule Slot do
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "guest_star/slot",
+      case Req.post!(Teac.api_uri() <> "guest_star/slot",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -164,9 +164,9 @@ defmodule Teac.Api.GuestStar do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "guest_star/slot",
+      case Req.patch!(Teac.api_uri() <> "guest_star/slot",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -182,9 +182,9 @@ defmodule Teac.Api.GuestStar do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "guest_star/slot",
+      case Req.delete!(Teac.api_uri() <> "guest_star/slot",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -202,9 +202,9 @@ defmodule Teac.Api.GuestStar do
   defmodule SlotSettings do
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "guest_star/slot_settings",
+      case Req.patch!(Teac.api_uri() <> "guest_star/slot_settings",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},

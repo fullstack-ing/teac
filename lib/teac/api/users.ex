@@ -16,7 +16,7 @@ defmodule Teac.Api.Users do
   """
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
     # Normalize parameters to lists of strings
     ids = opts |> Keyword.get(:ids, []) |> List.wrap() |> Enum.map(&to_string/1)
@@ -33,7 +33,7 @@ defmodule Teac.Api.Users do
         params =
           Enum.map(ids, &{:id, &1}) ++ Enum.map(logins, &{:login, &1})
 
-        case Req.get!(Teac.Api.api_uri() <> "users",
+        case Req.get!(Teac.api_uri() <> "users",
                headers: [
                  {"Authorization", "Bearer #{token}"},
                  {"Client-Id", client_id}
@@ -60,10 +60,10 @@ defmodule Teac.Api.Users do
   """
   def put(opts) do
     token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.fetch!(opts, :client_id)
+    client_id = Keyword.get(opts, :client_id, Teac.client_id())
     description = Keyword.get(opts, :description, nil)
 
-    case Req.put!(Teac.Api.api_uri() <> "users",
+    case Req.put!(Teac.api_uri() <> "users",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},
@@ -82,9 +82,9 @@ defmodule Teac.Api.Users do
   defmodule Blocks do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "users/blocks",
+      case Req.get!(Teac.api_uri() <> "users/blocks",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -98,9 +98,9 @@ defmodule Teac.Api.Users do
 
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "users/blocks",
+      case Req.put!(Teac.api_uri() <> "users/blocks",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -116,9 +116,9 @@ defmodule Teac.Api.Users do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "users/blocks",
+      case Req.delete!(Teac.api_uri() <> "users/blocks",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -136,9 +136,9 @@ defmodule Teac.Api.Users do
   defmodule Extensions do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "users/extensions",
+      case Req.get!(Teac.api_uri() <> "users/extensions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -152,9 +152,9 @@ defmodule Teac.Api.Users do
 
     def put(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.put!(Teac.Api.api_uri() <> "users/extensions",
+      case Req.put!(Teac.api_uri() <> "users/extensions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -172,9 +172,9 @@ defmodule Teac.Api.Users do
   defmodule Extensions.List do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "users/extensions/list",
+      case Req.get!(Teac.api_uri() <> "users/extensions/list",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}

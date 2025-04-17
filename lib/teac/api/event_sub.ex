@@ -2,9 +2,9 @@ defmodule Teac.Api.EventSub do
   defmodule Conduits do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "eventsub/conduits",
+      case Req.get!(Teac.api_uri() <> "eventsub/conduits",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -18,9 +18,9 @@ defmodule Teac.Api.EventSub do
 
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "eventsub/conduit",
+      case Req.post!(Teac.api_uri() <> "eventsub/conduit",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -36,9 +36,9 @@ defmodule Teac.Api.EventSub do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "eventsub/conduit",
+      case Req.patch!(Teac.api_uri() <> "eventsub/conduit",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -54,9 +54,9 @@ defmodule Teac.Api.EventSub do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "eventsub/conduit",
+      case Req.delete!(Teac.api_uri() <> "eventsub/conduit",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -74,9 +74,9 @@ defmodule Teac.Api.EventSub do
   defmodule Conduits.Shards do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "eventsub/conduits/shards",
+      case Req.get!(Teac.api_uri() <> "eventsub/conduits/shards",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -90,9 +90,9 @@ defmodule Teac.Api.EventSub do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "eventsub/conduits/shards",
+      case Req.patch!(Teac.api_uri() <> "eventsub/conduits/shards",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -110,9 +110,9 @@ defmodule Teac.Api.EventSub do
   defmodule Subscriptions do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.get!(Teac.Api.api_uri() <> "eventsub/subscriptions",
+      case Req.get!(Teac.api_uri() <> "eventsub/subscriptions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -126,10 +126,10 @@ defmodule Teac.Api.EventSub do
 
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
       payload = Keyword.fetch!(opts, :payload)
 
-      case Req.post!(Teac.Api.api_uri() <> "eventsub/subscriptions",
+      case Req.post!(Teac.api_uri() <> "eventsub/subscriptions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -144,9 +144,9 @@ defmodule Teac.Api.EventSub do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "eventsub/subscriptions",
+      case Req.delete!(Teac.api_uri() <> "eventsub/subscriptions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},

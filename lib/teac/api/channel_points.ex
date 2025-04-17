@@ -5,7 +5,7 @@ defmodule Teac.Api.ChannelPoints do
     """
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
       params = [
         broadcaster_id: Keyword.fetch!(opts, :broadcaster_id),
@@ -18,7 +18,7 @@ defmodule Teac.Api.ChannelPoints do
           ids -> params ++ ids
         end
 
-      case Req.get!(Teac.Api.api_uri() <> "channel_points/custom_rewards",
+      case Req.get!(Teac.api_uri() <> "channel_points/custom_rewards",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id}
@@ -32,9 +32,9 @@ defmodule Teac.Api.ChannelPoints do
 
     def post(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.post!(Teac.Api.api_uri() <> "channel_points/custom_rewards",
+      case Req.post!(Teac.api_uri() <> "channel_points/custom_rewards",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -51,9 +51,9 @@ defmodule Teac.Api.ChannelPoints do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.patch!(Teac.Api.api_uri() <> "channel_points/custom_rewards",
+      case Req.patch!(Teac.api_uri() <> "channel_points/custom_rewards",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -69,9 +69,9 @@ defmodule Teac.Api.ChannelPoints do
 
     def delete(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-      case Req.delete!(Teac.Api.api_uri() <> "channel_points/custom_rewards",
+      case Req.delete!(Teac.api_uri() <> "channel_points/custom_rewards",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
@@ -89,7 +89,7 @@ defmodule Teac.Api.ChannelPoints do
   defmodule Redemptions do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
       params =
         case Keyword.get(opts, :broadcaster_id) do
@@ -121,7 +121,7 @@ defmodule Teac.Api.ChannelPoints do
           params =
             Enum.map(ids, &{:id, &1}) ++ params
 
-          case Req.get!(Teac.Api.api_uri() <> "channel_points/custom_rewards/redemptions",
+          case Req.get!(Teac.api_uri() <> "channel_points/custom_rewards/redemptions",
                  headers: [
                    {"Authorization", "Bearer #{token}"},
                    {"Client-Id", client_id}
@@ -136,10 +136,10 @@ defmodule Teac.Api.ChannelPoints do
 
     def patch(opts) do
       token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.fetch!(opts, :client_id)
+      client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
       case Req.patch!(
-             Teac.Api.api_uri() <> "channel_points/custom_rewards/redemptions",
+             Teac.api_uri() <> "channel_points/custom_rewards/redemptions",
              headers: [
                {"Authorization", "Bearer #{token}"},
                {"Client-Id", client_id},
