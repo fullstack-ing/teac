@@ -5,32 +5,16 @@ defmodule Teac.OAuth.AuthorizationCodeFlow do
 
   @default_headers [{"Content-Type", "application/x-www-form-urlencoded"}]
 
-  def authorize_url() do
-    authorize_url(
-      client_id: Teac.client_id(),
-      state: Teac.random_string(),
-      response_type: "code",
-      redirect_uri: Teac.redirect_uri(),
-      scopes: scopes()
-    )
-  end
-
-  def authorize_url(
-        client_id: client_id,
-        state: state,
-        response_type: response_type,
-        redirect_uri: redirect_uri,
-        scopes: scopes
-      ) do
+  def authorize_url(opts \\ []) do
     query_params = [
-      client_id: client_id,
-      state: state,
-      response_type: response_type,
-      redirect_uri: redirect_uri,
-      scope: scopes |> Enum.join(" ")
+      client_id: Keyword.get(opts, :client_id, Teac.client_id()),
+      state: Keyword.get(opts, :state, Teac.random_string()),
+      response_type: "code",
+      redirect_uri: Keyword.get(opts, :redirect_uri, Teac.redirect_uri()),
+      scope: Keyword.get(opts, :scope, scopes()) |> Enum.join(" ")
     ]
 
-    "https://id.twitch.tv/oauth2/authorize?" <> URI.encode_query(query_params)
+    Teac.auth_uri() <> "authorize?" <> URI.encode_query(query_params)
   end
 
   def exchange_code_for_token(opts) do
@@ -51,7 +35,7 @@ defmodule Teac.OAuth.AuthorizationCodeFlow do
         redirect_uri: redirect_uri
       ) do
     Req.post(
-      url: "https://id.twitch.tv/oauth2/token",
+      url: Teac.auth_uri() <> "token",
       form: [
         client_id: client_id,
         client_secret: client_secret,
@@ -73,5 +57,5 @@ defmodule Teac.OAuth.AuthorizationCodeFlow do
 
   defp handle_token_response({:error, reason}), do: {:error, reason}
 
-  defp scopes(), do: Teac.Scopes.all_values()
+  defp scopes(), do: [Teac.Scopes.User.read_email()]
 end
