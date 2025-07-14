@@ -1,4 +1,6 @@
 defmodule Teac.Api.Charity do
+  @moduledoc false
+
   defmodule Campaigns do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)

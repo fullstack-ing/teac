@@ -1,4 +1,6 @@
 defmodule Teac.Api.GuestStar do
+  @moduledoc false
+
   defmodule ChannelCettings do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)

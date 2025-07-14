@@ -1,4 +1,6 @@
 defmodule Teac.Api.Analytics do
+  @moduledoc false
+
   defmodule Extensions do
     @doc """
     # Get Extension Analytics

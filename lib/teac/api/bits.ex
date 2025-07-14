@@ -1,4 +1,6 @@
 defmodule Teac.Api.Bits do
+  @moduledoc false
+
   defmodule Leaderboard do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)

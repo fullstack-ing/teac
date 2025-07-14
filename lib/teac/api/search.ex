@@ -1,4 +1,6 @@
 defmodule Teac.Api.Search do
+  @moduledoc false
+
   defmodule Categories do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)

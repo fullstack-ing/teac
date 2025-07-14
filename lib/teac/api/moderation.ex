@@ -1,4 +1,6 @@
 defmodule Teac.Api.Moderation do
+  @moduledoc false
+
   defmodule Automod.Settings do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)

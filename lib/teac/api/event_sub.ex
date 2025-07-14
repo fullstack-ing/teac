@@ -1,4 +1,6 @@
 defmodule Teac.Api.EventSub do
+  @moduledoc false
+
   defmodule Conduits do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)

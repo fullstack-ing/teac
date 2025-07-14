@@ -1,4 +1,6 @@
 defmodule Teac.Api.ChannelPoints do
+  @moduledoc false
+
   defmodule CustomRewards do
     @doc """
     https://dev.twitch.tv/docs/api/reference/#get-custom-reward

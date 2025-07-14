@@ -1,4 +1,6 @@
 defmodule Teac.Api.Entitlements do
+  @moduledoc false
+
   defmodule Drops do
     def get(opts) do
       token = Keyword.fetch!(opts, :token)

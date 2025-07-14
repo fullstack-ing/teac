@@ -1,4 +1,6 @@
 defmodule Teac.Api.Chat do
+  @moduledoc false
+
   defmodule Announcements do
     @doc """
     Sends an announcement to the broadcaster’s chat room.
