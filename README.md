@@ -3,6 +3,10 @@
 Twitch Elixir API Client
 For Twitch's REST and WebSocket API.
 
+## Hex docs
+
+https://hexdocs.pm/teac/readme.html
+
 ## Installation
 
 This is currently a work in progress.
@@ -10,15 +14,52 @@ This is currently a work in progress.
 ```elixir
 def deps do
   [
-    {:teac, git: "https://github.com/fullstack-ing/teac"}
+    {:teac, "~> 0.1.0"}
+    # {:teac, git: "https://github.com/fullstack-ing/teac"}
   ]
 end
+```
+
+### .env
+```bash
+export TWITCH_CLIENT_ID=""
+export TWITCH_CLIENT_SECRET=""
+export TWITCH_API_URI="https://api.twitch.tv/helix/"
+export TWITCH_AUTH_URI="https://id.twitch.tv/oauth2/"
+export TWITCH_OAUTH_CALLBACK_URI="http://example.com:4000/oauth/callbacks/twitch/"
 ```
 
 ## Example Application using this lib.
 https://github.com/fullstack-ing/teac_example
 
-## Using
+## Using App Flow Auth token.
+
+A genserver that fetches and mantains a valid auth token for Client Credential is provided.
+IE: Server To Server or noted as on any endpoint as `Requires an app access token`
+
+```elixir
+def start(_type, _args) do
+  children = [
+    ...
+    Teac.Oauth.ClientCredentialManager,
+    ...
+  ]
+  opts = [strategy: :one_for_one, name: TeacExample.Supervisor]
+  Supervisor.start_link(children, opts)
+end
+```
+
+Assuming you provided your `.env` vars and have a running server.
+You should be able to call that genserver to get a working token via.
+
+```elixir
+Teac.Oauth.ClientCredentialManager.get_token()
+```
+
+This should always return a valid app token.
+
+
+## Developing
 Assuming you have a Twitch mock server running to get the auth.
 ```
 {:ok, [%{"ID" => client_id, "Secret" => client_secret}]} = Teac.MockApi.clients()
