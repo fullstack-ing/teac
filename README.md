@@ -30,6 +30,7 @@ export TWITCH_OAUTH_CALLBACK_URI="http://example.com:4000/oauth/callbacks/twitch
 ```
 
 ### config.ex
+
 ```elixir
 config :teac,
   client_id: System.get_env("TWITCH_CLIENT_ID"),
@@ -71,7 +72,7 @@ This should always return a valid app token.
 
 ## Developing
 Assuming you have a Twitch mock server running to get the auth.
-```
+```elixir
 {:ok, [%{"ID" => client_id, "Secret" => client_secret}]} = Teac.MockApi.clients()
 
 {:ok, %{"access_token" => access_token}} =
