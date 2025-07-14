@@ -75,6 +75,20 @@ This should always return a valid app token.
 
 
 ## Developing
+You will need the twitch cli tool.
+https://dev.twitch.tv/docs/cli/
+
+* Generate some mock data
+  `twitch mock-api generate -c 6`
+
+* Set Env Variables from mock output
+  `export TWITCH_CLIENT_ID=your_client_id`
+  `export TWITCH_CLIENT_SECRET=your_client_secret`
+  `export TWITCH_API_URI="http://localhost:8080"`
+
+* Start a mock twitch server.
+  `twitch mock-api serve`
+
 Assuming you have a Twitch mock server running to get the auth.
 ```elixir
 {:ok, [%{"ID" => client_id, "Secret" => client_secret}]} = Teac.MockApi.clients()
@@ -91,18 +105,3 @@ By default most will require a `token` and `client_id`.
 
 All the other options are also just passed in the Keyword list (opts).
 
-## Development
-
-You will need the twitch cli tool.
-https://dev.twitch.tv/docs/cli/
-
-* Generate some mock data
-  `twitch mock-api generate -c 6`
-
-* Set Env Variables from mock output
-  `export TWITCH_CLIENT_ID=your_client_id`
-  `export TWITCH_CLIENT_SECRET=your_client_secret`
-  `export TWITCH_API_URI="http://localhost:8080"`
-
-* Start a mock twitch server.
-  `twitch mock-api serve`
