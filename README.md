@@ -29,6 +29,16 @@ export TWITCH_AUTH_URI="https://id.twitch.tv/oauth2/"
 export TWITCH_OAUTH_CALLBACK_URI="http://example.com:4000/oauth/callbacks/twitch/"
 ```
 
+### config.ex
+```elixir
+config :teac,
+  client_id: System.get_env("TWITCH_CLIENT_ID"),
+  client_secret: System.get_env("TWITCH_CLIENT_SECRET"),
+  api_uri: System.get_env("TWITCH_API_URI"),
+  auth_uri: System.get_env("TWITCH_AUTH_URI"),
+  oauth_callback_uri: System.get_env("TWITCH_OAUTH_CALLBACK_URI")
+```
+
 ## Example Application using this lib.
 https://github.com/fullstack-ing/teac_example
 
