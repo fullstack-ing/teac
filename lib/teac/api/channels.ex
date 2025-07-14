@@ -1,23 +1,81 @@
 defmodule Teac.Api.Channels do
+  alias Teac.Api
+  import Ecto.Changeset
+
+  @doc """
+  Gets information about one or more channels.
+
+  #### Authorization
+  Requires an app access token or user access token.
+
+  ### Parameters
+
+  * broadcaster_ids : required    \
+  list of one of more broadcaster_ids   \
+  Max 100 IDs, ignores duplicates and not found.
+
+  * token : required (app or user)
+
+  * client_id : optinal (defaults to Teac.client_id())
+
+  ### Examples
+
+      iex> Teac.Api.Channels.get([123, 234], "some_token")
+      iex> Teac.Api.Channels.get([123, 234], "some_token", "some_client_id")
+
+      {:ok,
+        {
+          "broadcaster_id" =>  "1",
+          "broadcaster_login" =>  "twitchdev",
+          "broadcaster_name" =>  "TwitchDev",
+          "broadcaster_language" =>  "en",
+          "game_id" =>  "509670",
+          "game_name" =>  "Science & Technology",
+          "title" =>  "TwitchDev Monthly Update // May 6, 2021",
+          "delay" =>  0,
+          "tags" =>  ["DevsInTheKnow"],
+          "content_classification_labels" => ["Gambling", "DrugsIntoxication", "MatureGame"],
+          "is_branded_content" =>  false
+        }...
+      }
+  """
+
   def get(opts) do
-    token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.get(opts, :client_id, Teac.client_id())
+    case validate_get_opts(opts) do
+      {:ok, %{broadcaster_ids: broadcaster_ids, token: token, client_id: client_id}} ->
+        params =
+          broadcaster_ids
+          |> Enum.map(&to_string/1)
+          |> Enum.map(&{:broadcaster_id, &1})
 
-    broadcaster_ids =
-      opts |> Keyword.fetch!(:broadcaster_ids) |> List.wrap() |> Enum.map(&to_string/1)
+        [
+          base_url: Api.uri("channels"),
+          params: params,
+          headers: Api.headers(token, client_id || Teac.client_id())
+        ]
+        |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
+        |> Req.get!()
+        |> Api.handle_response()
 
-    params =
-      Enum.map(broadcaster_ids, &{:broadcaster_id, &1})
+      error ->
+        error
+    end
+  end
 
-    case Req.get!(Teac.api_uri() <> "channels",
-           headers: [
-             {"Authorization", "Bearer #{token}"},
-             {"Client-Id", client_id}
-           ],
-           params: params
-         ) do
-      %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-      %Req.Response{body: body} -> {:error, body}
+  defp validate_get_opts(opt) do
+    data = %{}
+    types = %{token: :string, client_id: :string, broadcaster_ids: {:array, :integer}}
+
+    changeset =
+      {data, types}
+      |> cast(opt |> Map.new(), Map.keys(types))
+      |> Api.default_client_id()
+      |> validate_required([:token, :client_id, :broadcaster_ids])
+      |> validate_length(:broadcaster_ids, min: 1, max: 100)
+
+    case apply_action(changeset, :insert) do
+      {:ok, data} -> {:ok, data}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
 
