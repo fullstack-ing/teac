@@ -1,10 +1,10 @@
-defmodule Teac.Api.Schedule do
+defmodule Teac.Api.Chat.Settings do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
     broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-    case Req.get!(Teac.api_uri() <> "schedule",
+    case Req.get!(Teac.api_uri() <> "chat/settings",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
@@ -16,11 +16,11 @@ defmodule Teac.Api.Schedule do
     end
   end
 
-  def delete(opts) do
+  def patch(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.delete!(Teac.api_uri() <> "schedule/",
+    case Req.patch!(Teac.api_uri() <> "chat/settings",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},

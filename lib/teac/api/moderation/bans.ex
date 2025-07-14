@@ -1,15 +1,16 @@
-defmodule Teac.Api.Schedule do
-  def get(opts) do
+defmodule Teac.Api.Moderation.Bans do
+  def post(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
-    broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-    case Req.get!(Teac.api_uri() <> "schedule",
+    case Req.post!(Teac.api_uri() <> "moderation/bans",
            headers: [
              {"Authorization", "Bearer #{token}"},
-             {"Client-Id", client_id}
+             {"Client-Id", client_id},
+             {"Content-Type", "application/x-www-form-urlencoded"}
            ],
-           params: [broadcaster_id: broadcaster_id]
+           form: [],
+           decode_body: :json
          ) do
       %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
       %Req.Response{body: body} -> {:error, body}
@@ -20,7 +21,7 @@ defmodule Teac.Api.Schedule do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.delete!(Teac.api_uri() <> "schedule/",
+    case Req.delete!(Teac.api_uri() <> "moderation/bans",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},

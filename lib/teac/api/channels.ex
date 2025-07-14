@@ -8,7 +8,7 @@ defmodule Teac.Api.Channels do
   #### Authorization
   Requires an app access token or user access token.
 
-  ### Parameters
+  ### Opts Arrgument keys
 
   * broadcaster_ids : required    \
   list of one of more broadcaster_ids   \
@@ -40,6 +40,9 @@ defmodule Teac.Api.Channels do
       }
   """
 
+  @spec get(
+          opts :: [broadcaster_ids: [integer()], token: String.t(), client_id: String.t() | nil]
+        ) :: {:ok, map()} | {:error, any()}
   def get(opts) do
     case validate_get_opts(opts) do
       {:ok, %{broadcaster_ids: broadcaster_ids, token: token, client_id: client_id}} ->
@@ -51,7 +54,7 @@ defmodule Teac.Api.Channels do
         [
           base_url: Api.uri("channels"),
           params: params,
-          headers: Api.headers(token, client_id || Teac.client_id())
+          headers: Api.headers(token, client_id)
         ]
         |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
         |> Req.get!()
@@ -79,188 +82,72 @@ defmodule Teac.Api.Channels do
     end
   end
 
+  @doc """
+  Modify Channel Information
+  Updates a channel’s properties.
+
+  ## Authorization
+  Requires a user access token that includes the channel:manage:broadcast scope.
+
+  ### Opts Arrgument keys
+  * token : required user token
+  * client_id : optinal (defaults to Teac.client_id())
+  * broadcaster_id: String - required
+
+  The ID of the broadcaster whose channel you want to update.    \
+  This ID must match the user ID in the user access token.    \
+
+  * form : required - Map (At leaste one key is required)
+      - game_id: String - optional - Unset with 0 or ""
+      - broadcaster_language: - String - optinal (ISO 639-1 two-letter language code)
+      - title: String - optional
+      - delay: integer - optional
+      - tags: list of strings - optional (max 10 tax, max 25 chars per tag)
+      - content_classification_labels - Map - optional
+          id: String - required
+            can be one of the following:
+            * DebatedSocialIssuesAndPolitics
+            * DrugsIntoxication
+            * SexualThemes
+            * ViolentGraphic
+            * Gambling
+            * ProfanityVulgarity
+          is_enabled: boolean - required
+      - is_branded_content: boolean - optional
+  """
+  @spec get(opts :: [broadcaster_id: String.t(), token: String.t(), client_id: String.t() | nil]) ::
+          {:ok, map()} | {:error, any()}
   def patch(opts) do
-    token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.get(opts, :client_id, Teac.client_id())
-    broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
+    case validate_patch_opts(opts) do
+      {:ok, %{token: token, client_id: client_id}} ->
+        [
+          base_url: Api.uri("channels"),
+          params: [],
+          form: [title: "asdf"],
+          headers: Api.headers(token, client_id)
+        ]
+        |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
+        |> Req.patch!()
+        |> Api.handle_response()
 
-    case Req.patch!(Teac.api_uri() <> "channels",
-           headers: [
-             {"Authorization", "Bearer #{token}"},
-             {"Client-Id", client_id},
-             {"Content-Type", "application/x-www-form-urlencoded"}
-           ],
-           params: [broadcaster_id: broadcaster_id],
-           form: [title: "asdf"],
-           decode_body: :json
-         ) do
-      %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-      %Req.Response{body: body} -> {:error, body}
+      error ->
+        error
     end
   end
 
-  defmodule Channels.Ads do
-    def get(opts) do
-      token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.get(opts, :client_id, Teac.client_id())
+  defp validate_patch_opts(opt) do
+    data = %{}
+    types = %{broadcaster_id: :integer, token: :string, client_id: :string}
 
-      case Req.get!(Teac.api_uri() <> "channels/ads",
-             headers: [
-               {"Authorization", "Bearer #{token}"},
-               {"Client-Id", client_id}
-             ],
-             params: []
-           ) do
-        %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-        %Req.Response{body: body} -> {:error, body}
-      end
-    end
+    changeset =
+      {data, types}
+      |> cast(opt |> Map.new(), Map.keys(types))
+      |> Api.default_client_id()
+      |> validate_required([:broadcaster_id, :token, :client_id])
 
-    defmodule Ads.Schedule.Snooze do
-      def post(opts) do
-        token = Keyword.fetch!(opts, :token)
-        client_id = Keyword.get(opts, :client_id, Teac.client_id())
-
-        case Req.post!(Teac.api_uri() <> "channels/ads/schedule/snooze",
-               headers: [
-                 {"Authorization", "Bearer #{token}"},
-                 {"Client-Id", client_id},
-                 {"Content-Type", "application/x-www-form-urlencoded"}
-               ],
-               form: [],
-               decode_body: :json
-             ) do
-          %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-          %Req.Response{body: body} -> {:error, body}
-        end
-      end
-    end
-  end
-
-  defmodule Commercial do
-    def post(opts) do
-      token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.get(opts, :client_id, Teac.client_id())
-
-      case Req.post!(Teac.api_uri() <> "channels/commercial",
-             headers: [
-               {"Authorization", "Bearer #{token}"},
-               {"Client-Id", client_id},
-               {"Content-Type", "application/x-www-form-urlencoded"}
-             ],
-             form: [],
-             decode_body: :json
-           ) do
-        %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-        %Req.Response{body: body} -> {:error, body}
-      end
-    end
-  end
-
-  defmodule Editors do
-    def get(opts) do
-      token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.get(opts, :client_id, Teac.client_id())
-      broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
-
-      case Req.get!(Teac.api_uri() <> "channels/editors",
-             headers: [
-               {"Authorization", "Bearer #{token}"},
-               {"Client-Id", client_id}
-             ],
-             params: [broadcaster_id: broadcaster_id]
-           ) do
-        %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-        %Req.Response{body: body} -> {:error, body}
-      end
-    end
-  end
-
-  defmodule Followed do
-    def get(opts) do
-      token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.get(opts, :client_id, Teac.client_id())
-      user_id = Keyword.fetch!(opts, :user_id)
-      params = [user_id: user_id]
-
-      params =
-        case Keyword.get(opts, :broadcaster_id) do
-          nil -> params
-          broadcaster_id -> params ++ [broadcaster_id: broadcaster_id]
-        end
-
-      case Req.get!(Teac.api_uri() <> "channels/followed",
-             headers: [
-               {"Authorization", "Bearer #{token}"},
-               {"Client-Id", client_id}
-             ],
-             params: params
-           ) do
-        %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-        %Req.Response{body: body} -> {:error, body}
-      end
-    end
-  end
-
-  defmodule Followers do
-    def get(opts) do
-      token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.get(opts, :client_id, Teac.client_id())
-      broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
-      params = [broadcaster_id: broadcaster_id]
-
-      params =
-        case Keyword.get(opts, :user_id) do
-          nil -> params
-          user_id -> params ++ [user_id: user_id]
-        end
-
-      case Req.get!(Teac.api_uri() <> "channels/followers",
-             headers: [
-               {"Authorization", "Bearer #{token}"},
-               {"Client-Id", client_id}
-             ],
-             params: params
-           ) do
-        %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-        %Req.Response{body: body} -> {:error, body}
-      end
-    end
-  end
-
-  defmodule Vips do
-    def get(opts) do
-      token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.get(opts, :client_id, Teac.client_id())
-
-      case Req.get!(Teac.api_uri() <> "channels/vips",
-             headers: [
-               {"Authorization", "Bearer #{token}"},
-               {"Client-Id", client_id}
-             ],
-             params: []
-           ) do
-        %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-        %Req.Response{body: body} -> {:error, body}
-      end
-    end
-
-    def delete(opts) do
-      token = Keyword.fetch!(opts, :token)
-      client_id = Keyword.get(opts, :client_id, Teac.client_id())
-
-      case Req.delete!(Teac.api_uri() <> "channels/vips",
-             headers: [
-               {"Authorization", "Bearer #{token}"},
-               {"Client-Id", client_id},
-               {"Content-Type", "application/x-www-form-urlencoded"}
-             ],
-             form: [],
-             decode_body: :json
-           ) do
-        %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-        %Req.Response{body: body} -> {:error, body}
-      end
+    case apply_action(changeset, :insert) do
+      {:ok, data} -> {:ok, data}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
 end

@@ -1,9 +1,9 @@
-defmodule Teac.Api.Teams do
+defmodule Teac.Api.Moderation.Banned do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.api_uri() <> "teams",
+    case Req.get!(Teac.api_uri() <> "moderation/banned",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}

@@ -1,9 +1,9 @@
-defmodule Teac.Api.Teams do
+defmodule Teac.Api.Chat.Emotes.User do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.get!(Teac.api_uri() <> "teams",
+    case Req.get!(Teac.api_uri() <> "chat/emotes/user",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}

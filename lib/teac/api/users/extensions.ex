@@ -1,26 +1,25 @@
-defmodule Teac.Api.Schedule do
+defmodule Teac.Api.Users.Extensions do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
-    broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
 
-    case Req.get!(Teac.api_uri() <> "schedule",
+    case Req.get!(Teac.api_uri() <> "users/extensions",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
            ],
-           params: [broadcaster_id: broadcaster_id]
+           params: []
          ) do
       %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
       %Req.Response{body: body} -> {:error, body}
     end
   end
 
-  def delete(opts) do
+  def put(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.delete!(Teac.api_uri() <> "schedule/",
+    case Req.put!(Teac.api_uri() <> "users/extensions",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},

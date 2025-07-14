@@ -1,26 +1,26 @@
-defmodule Teac.Api.Schedule do
+defmodule Teac.Api.Chat.Color do
   def get(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
-    broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
+    user_id = Keyword.fetch!(opts, :user_id)
 
-    case Req.get!(Teac.api_uri() <> "schedule",
+    case Req.get!(Teac.api_uri() <> "chat/color",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id}
            ],
-           params: [broadcaster_id: broadcaster_id]
+           params: [user_id: user_id]
          ) do
       %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
       %Req.Response{body: body} -> {:error, body}
     end
   end
 
-  def delete(opts) do
+  def put(opts) do
     token = Keyword.fetch!(opts, :token)
     client_id = Keyword.get(opts, :client_id, Teac.client_id())
 
-    case Req.delete!(Teac.api_uri() <> "schedule/",
+    case Req.put!(Teac.api_uri() <> "chat/color",
            headers: [
              {"Authorization", "Bearer #{token}"},
              {"Client-Id", client_id},
