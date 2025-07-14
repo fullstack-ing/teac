@@ -1,5 +1,6 @@
 defmodule Api.ChannelsTest do
   use ExUnit.Case, async: true
+  alias Teac.Api.Channels
 
   @mock %{
     "broadcaster_id" => "1",
@@ -20,10 +21,8 @@ defmodule Api.ChannelsTest do
       Req.Test.json(conn, %{"data" => @mock})
     end)
 
-    assert Teac.Api.Channels.get(broadcaster_ids: [1], token: "token") == {:ok, @mock}
-
-    assert Teac.Api.Channels.get(broadcaster_ids: [1], token: "token", client_id: "asdf") ==
-             {:ok, @mock}
+    assert Channels.get(broadcaster_ids: [1], token: "token") == {:ok, @mock}
+    assert Channels.get(broadcaster_ids: [1], token: "token", client_id: "asdf") == {:ok, @mock}
   end
 
   test "invalid get/3" do
@@ -31,7 +30,7 @@ defmodule Api.ChannelsTest do
       Req.Test.json(conn, %{"data" => @mock})
     end)
 
-    assert Teac.Api.Channels.get(broadcaster_ids: [], token: "token") ==
+    assert Channels.get(broadcaster_ids: [], token: "token") ==
              {:error,
               [
                 broadcaster_ids:
@@ -39,7 +38,7 @@ defmodule Api.ChannelsTest do
                    [count: 1, validation: :length, kind: :min, type: :list]}
               ]}
 
-    assert Teac.Api.Channels.get(broadcaster_ids: 1..200 |> Enum.to_list(), token: "token") ==
+    assert Channels.get(broadcaster_ids: 1..200 |> Enum.to_list(), token: "token") ==
              {:error,
               [
                 broadcaster_ids:
@@ -47,7 +46,7 @@ defmodule Api.ChannelsTest do
                    [count: 100, validation: :length, kind: :max, type: :list]}
               ]}
 
-    assert Teac.Api.Channels.get(broadcaster_ids: [1]) ==
+    assert Channels.get(broadcaster_ids: [1]) ==
              {:error, [token: {"can't be blank", [validation: :required]}]}
   end
 end
