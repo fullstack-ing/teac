@@ -3,6 +3,10 @@
 Twitch Elixir API Client
 For Twitch's REST and WebSocket API.
 
+> ⚠️  Please note this is a work in progress. ⚠️   
+> There is a ticket for varifying each and every http reset endpoint.    
+> To check if a given has been fully implamented yet, check the issue corrasponding to that endpoint.    
+
 ## Hex docs
 
 https://hexdocs.pm/teac/readme.html
