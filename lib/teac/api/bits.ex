@@ -127,7 +127,7 @@ defmodule Teac.Api.Bits do
           params =
             case Map.get(args, :broadcaster_id) do
               nil -> []
-              broadcaster_id -> [broadcaster_id: broadcaster_id]
+              broadcaster_id -> [broadcaster_id: broadcaster_id |> to_string()]
             end
 
           [
