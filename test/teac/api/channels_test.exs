@@ -56,7 +56,7 @@ defmodule Api.ChannelsTest do
   test "patch/1 valid" do
     # Convert input opts to proper structure
     form_data = %{
-      "game_id" => 1,
+      "game_id" => "1",
       "broadcaster_language" => "en",
       "title" => "some_title",
       "delay" => 1,
