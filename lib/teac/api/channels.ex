@@ -27,7 +27,7 @@ defmodule Teac.Api.Channels do
     @primary_key false
     @derive Jason.Encoder
     embedded_schema do
-      field(:game_id, :integer)
+      field(:game_id, :string)
       field(:broadcaster_language, :string)
       field(:title, :string)
       field(:delay, :integer)
