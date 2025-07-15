@@ -1,27 +1,42 @@
 defmodule Teac.Api.Chat.Badges do
-  @doc """
-    Gets the broadcaster’s list of custom chat badges. The list is empty if the broadcaster hasn’t created custom chat badges.
-    For information about custom badges, see subscriber badges and Bits badges.
+  alias Teac.Api
+  import Ecto.Changeset
 
-    source docs: https://dev.twitch.tv/docs/api/reference/#get-channel-chat-badges
-
-    ## Authorization
-    Requires an app access token or user access token.
-  """
   def get(opts) do
-    token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.get(opts, :client_id, Teac.client_id())
-    broadcaster_id = Keyword.fetch!(opts, :broadcaster_id)
+    case validate_get_opts(opts) do
+      {:ok, %{token: token, client_id: client_id, broadcaster_id: broadcaster_id}} ->
+        [
+          base_url: Api.uri("chat/badges"),
+          params: [broadcaster_id: broadcaster_id],
+          headers: Api.headers(token, client_id)
+        ]
+        |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
+        |> Req.get!()
+        |> Api.handle_response()
 
-    case Req.get!(Teac.api_uri() <> "chat/badges",
-           headers: [
-             {"Authorization", "Bearer #{token}"},
-             {"Client-Id", client_id}
-           ],
-           params: [broadcaster_id: broadcaster_id]
-         ) do
-      %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-      %Req.Response{body: body} -> {:error, body}
+      error ->
+        error
+    end
+  end
+
+  defp validate_get_opts(opt) do
+    data = %{}
+
+    types = %{
+      token: :string,
+      client_id: :string,
+      broadcaster_id: :string
+    }
+
+    changeset =
+      {data, types}
+      |> cast(opt |> Map.new(), Map.keys(types))
+      |> Api.default_client_id()
+      |> validate_required([:token, :client_id, :broadcaster_id])
+
+    case apply_action(changeset, :insert) do
+      {:ok, data} -> {:ok, data}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
 end

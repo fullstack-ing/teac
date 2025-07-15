@@ -1,28 +1,40 @@
 defmodule Teac.Api.Chat.Badges.Global do
-  @doc """
-  Gets Twitch’s list of chat badges, which users may use in any channel’s chat room.
-  For information about chat badges, see Twitch Chat Badges Guide.
+  alias Teac.Api
+  import Ecto.Changeset
 
-  source docs: https://dev.twitch.tv/docs/api/reference/#get-global-chat-badges
-
-  ## Authorization
-
-  Requires an app access token or user access token.
-  """
   def get(opts) do
-    token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.get(opts, :client_id, Teac.client_id())
-    user_id = Keyword.fetch!(opts, :user_id)
+    case validate_get_opts(opts) do
+      {:ok, %{token: token, client_id: client_id}} ->
+        [
+          base_url: Api.uri("chat/badges/global"),
+          headers: Api.headers(token, client_id)
+        ]
+        |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
+        |> Req.get!()
+        |> Api.handle_response()
 
-    case Req.get!(Teac.api_uri() <> "chat/badges/global",
-           headers: [
-             {"Authorization", "Bearer #{token}"},
-             {"Client-Id", client_id}
-           ],
-           params: [user_id: user_id]
-         ) do
-      %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-      %Req.Response{body: body} -> {:error, body}
+      error ->
+        error
+    end
+  end
+
+  defp validate_get_opts(opt) do
+    data = %{}
+
+    types = %{
+      token: :string,
+      client_id: :string
+    }
+
+    changeset =
+      {data, types}
+      |> cast(opt |> Map.new(), Map.keys(types))
+      |> Api.default_client_id()
+      |> validate_required([:token, :client_id])
+
+    case apply_action(changeset, :insert) do
+      {:ok, data} -> {:ok, data}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
 end

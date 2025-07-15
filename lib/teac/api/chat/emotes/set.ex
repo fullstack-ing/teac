@@ -1,20 +1,42 @@
 defmodule Teac.Api.Chat.Emotes.Set do
-  def get(opts) do
-    token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.get(opts, :client_id, Teac.client_id())
-    emote_set_id = Keyword.fetch!(opts, :emote_set_id)
+  alias Teac.Api
+  import Ecto.Changeset
 
-    case Req.get!(Teac.api_uri() <> "chat/emotes/set",
-           headers: [
-             {"Authorization", "Bearer #{token}"},
-             {"Client-Id", client_id}
-           ],
-           params: [
-             emote_set_id: emote_set_id
-           ]
-         ) do
-      %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-      %Req.Response{body: body} -> {:error, body}
+  def get(opts) do
+    case validate_get_opts(opts) do
+      {:ok, %{token: token, client_id: client_id, emote_set_id: emote_set_id}} ->
+        [
+          base_url: Api.uri("chat/emotes/set"),
+          params: [emote_set_id: emote_set_id],
+          headers: Api.headers(token, client_id)
+        ]
+        |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
+        |> Req.get!()
+        |> Api.handle_response()
+
+      error ->
+        error
+    end
+  end
+
+  defp validate_get_opts(opt) do
+    data = %{}
+
+    types = %{
+      token: :string,
+      client_id: :string,
+      emote_set_id: :string
+    }
+
+    changeset =
+      {data, types}
+      |> cast(opt |> Map.new(), Map.keys(types))
+      |> Api.default_client_id()
+      |> validate_required([:token, :client_id, :emote_set_id])
+
+    case apply_action(changeset, :insert) do
+      {:ok, data} -> {:ok, data}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
 end
