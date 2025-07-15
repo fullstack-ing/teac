@@ -212,7 +212,6 @@ defmodule Teac.Api.Channels do
         |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
         |> Req.patch!()
         |> Api.handle_response()
-        |> dbg()
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:error, changeset.errors}
