@@ -1,0 +1,13 @@
+defmodule Teac.Api.Schedule.SegmentTest do
+  use ExUnit.Case, async: true
+
+  test "post/1 valid" do
+    # fixme
+    assert false
+  end
+
+  test "patch/1 valid" do
+    # fixme
+    assert false
+  end
+end

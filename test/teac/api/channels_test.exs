@@ -49,4 +49,9 @@ defmodule Api.ChannelsTest do
     assert Channels.get(broadcaster_ids: [1]) ==
              {:error, [token: {"can't be blank", [validation: :required]}]}
   end
+
+  test "patch/1 valid" do
+    # fixme
+    assert false
+  end
 end
