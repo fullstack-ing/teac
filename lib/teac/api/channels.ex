@@ -1,5 +1,83 @@
 defmodule Teac.Api.Channels do
+  defmodule ContentClassificationLabel do
+    use Ecto.Schema
+    import Ecto.Changeset
+
+    @primary_key false
+    @derive Jason.Encoder
+    embedded_schema do
+      field(:id, :string)
+      field(:is_enabled, :boolean)
+    end
+
+    def changeset(form, attrs) do
+      form
+      |> cast(attrs, [
+        :id,
+        :is_enabled
+      ])
+    end
+  end
+
+  defmodule Form do
+    use Ecto.Schema
+    import Ecto.Changeset
+    alias Teac.Api.Channels.ContentClassificationLabel
+
+    @primary_key false
+    @derive Jason.Encoder
+    embedded_schema do
+      field(:game_id, :integer)
+      field(:broadcaster_language, :string)
+      field(:title, :string)
+      field(:delay, :integer)
+      field(:tags, {:array, :string})
+      field(:is_branded_content, :boolean)
+      field(:is_rerun, :boolean)
+      embeds_many(:content_classification_labels, ContentClassificationLabel)
+    end
+
+    def changeset(form, attrs) do
+      form
+      |> cast(attrs, [
+        :game_id,
+        :broadcaster_language,
+        :title,
+        :delay,
+        :tags,
+        :is_branded_content
+      ])
+      |> cast_embed(:content_classification_labels,
+        with: &ContentClassificationLabel.changeset/2
+      )
+    end
+  end
+
+  defmodule PatchParams do
+    use Ecto.Schema
+    import Ecto.Changeset
+    alias Teac.Api.Channels.Form
+
+    @primary_key false
+    @derive Jason.Encoder
+    embedded_schema do
+      field(:broadcaster_id, :integer)
+      field(:token, :string)
+      field(:client_id, :string)
+      embeds_one(:form, Form)
+    end
+
+    def changeset(params, attrs) do
+      params
+      |> cast(attrs, [:broadcaster_id, :token, :client_id])
+      |> Teac.Api.default_client_id()
+      |> validate_required([:broadcaster_id, :token, :client_id])
+      |> cast_embed(:form, with: &Form.changeset/2)
+    end
+  end
+
   alias Teac.Api
+  alias Teac.Api.Channels.PatchParams
   import Ecto.Changeset
 
   @doc """
@@ -67,7 +145,7 @@ defmodule Teac.Api.Channels do
 
   defp validate_get_opts(opt) do
     data = %{}
-    types = %{token: :string, client_id: :string, broadcaster_ids: {:array, :integer}}
+    types = %{token: :string, client_id: :string, broadcaster_ids: {:array, :string}}
 
     changeset =
       {data, types}
@@ -118,36 +196,26 @@ defmodule Teac.Api.Channels do
   @spec get(opts :: [broadcaster_id: String.t(), token: String.t(), client_id: String.t() | nil]) ::
           {:ok, map()} | {:error, any()}
   def patch(opts) do
-    case validate_patch_opts(opts) do
-      {:ok, %{token: token, client_id: client_id}} ->
+    data =
+      %PatchParams{}
+      |> PatchParams.changeset(Map.new(opts))
+      |> apply_action(:insert)
+
+    case data do
+      {:ok, %{broadcaster_id: broadcaster_id, form: form, token: token, client_id: client_id}} ->
         [
           base_url: Api.uri("channels"),
-          params: [],
-          form: [title: "asdf"],
+          params: [broadcaster_id: broadcaster_id],
+          json: form,
           headers: Api.headers(token, client_id)
         ]
         |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
         |> Req.patch!()
         |> Api.handle_response()
+        |> dbg()
 
-      error ->
-        error
-    end
-  end
-
-  defp validate_patch_opts(opt) do
-    data = %{}
-    types = %{broadcaster_id: :integer, token: :string, client_id: :string}
-
-    changeset =
-      {data, types}
-      |> cast(opt |> Map.new(), Map.keys(types))
-      |> Api.default_client_id()
-      |> validate_required([:broadcaster_id, :token, :client_id])
-
-    case apply_action(changeset, :insert) do
-      {:ok, data} -> {:ok, data}
-      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:error, changeset.errors}
     end
   end
 end

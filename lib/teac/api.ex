@@ -22,6 +22,7 @@ defmodule Teac.Api do
   def handle_response(rsp) do
     case rsp do
       %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
+      %Req.Response{status: 204, body: ""} -> {:ok, "ok"}
       %Req.Response{body: body} -> {:error, body}
     end
   end
