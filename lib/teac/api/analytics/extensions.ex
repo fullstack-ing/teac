@@ -1,4 +1,7 @@
 defmodule Teac.Api.Analytics.Extensions do
+  alias Teac.Api
+  import Ecto.Changeset
+
   @doc """
   # Get Extension Analytics
   Gets an analytics report for one or more extensions. The response contains the URLs used to download the reports (CSV files).
@@ -8,7 +11,7 @@ defmodule Teac.Api.Analytics.Extensions do
   ### Authorization
   Requires a user access token that includes the `analytics:read:extensions` scope.
 
-  ### Parameters
+  ### Opts Arguments
   * extension_id :string, required: false
 
   The extension's client ID. If specified, the response contains a report for the specified extension. If not specified, the response includes a report for each extension that the authenticated user owns.
@@ -32,18 +35,58 @@ defmodule Teac.Api.Analytics.Extensions do
   If not, the API ignores your end date and uses an end date that is today minus one to two days.
   """
   def get(opts) do
-    token = Keyword.fetch!(opts, :token)
-    client_id = Keyword.get(opts, :client_id, Teac.client_id())
+    case validate_get_opts(opts) do
+      {:ok, %{token: token, client_id: client_id} = cs} ->
+        params =
+          [
+            extension_id: Map.get(cs, :extension_id, nil),
+            type: Map.get(cs, :type, nil),
+            started_at: Map.get(cs, :started_at, nil),
+            end_at: Map.get(cs, :end_at, nil),
+            first: Map.get(cs, :first, nil),
+            after: Map.get(cs, :after, nil)
+          ]
+          |> Enum.filter(fn {_, k} -> k != nil end)
 
-    case Req.get!(Teac.api_uri() <> "analytics/extensions",
-           headers: [
-             {"Authorization", "Bearer #{token}"},
-             {"Client-Id", client_id}
-           ],
-           params: []
-         ) do
-      %Req.Response{status: 200, body: %{"data" => data}} -> {:ok, data}
-      %Req.Response{body: body} -> {:error, body}
+        [
+          base_url: Api.uri("analytics/extensions"),
+          params: params,
+          headers: Api.headers(token, client_id)
+        ]
+        |> Keyword.merge(Application.get_env(:teac, :api_req_options, []))
+        |> Req.get!()
+        |> Api.handle_response()
+
+      error ->
+        error
+    end
+  end
+
+  defp validate_get_opts(opt) do
+    data = %{}
+
+    types = %{
+      token: :string,
+      client_id: :string,
+      type: :string,
+      extension_id: :string,
+      started_at: :string,
+      end_at: :string,
+      first: :integer,
+      after: :string
+    }
+
+    changeset =
+      {data, types}
+      |> cast(opt |> Map.new(), Map.keys(types))
+      |> Api.default_client_id()
+      |> validate_required([:token, :client_id])
+      |> validate_inclusion(:type, ["overview_v2"])
+      |> validate_number(:first, greater_than: 0, less_than: 101)
+
+    case apply_action(changeset, :insert) do
+      {:ok, data} -> {:ok, data}
+      {:error, %Ecto.Changeset{errors: errors}} -> {:error, errors}
     end
   end
 end
