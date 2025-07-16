@@ -50,6 +50,7 @@ All the REST API endpoints are namedspaced under Teac.Api
 Thus:
 ```elixir
 Teac.Api.Bits.Leaderboards.get(token: "some_auth_token")
+Teac.Api.Chat.Color.get(token: "some_auth_token", user_id: "some_users_id)
 ```
 
 Though the documentation is still a work in progress you will want to check to see if the given endpoint requires a User or App token. 
