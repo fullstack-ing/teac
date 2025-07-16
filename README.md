@@ -46,7 +46,7 @@ config :teac,
 
 ## Basic Usage. 
 
-All the REST API endpoints are namedspaced under Teac.Api
+All the REST API endpoints are namespaced under Teac.Api
 Thus:
 ```elixir
 Teac.Api.Bits.Leaderboards.get(token: "some_auth_token")
