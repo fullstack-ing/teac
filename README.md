@@ -49,7 +49,7 @@ config :teac,
 All the REST API endpoints are namedspaced under Teac.Api
 Thus:
 ```elixir
-Teac.Api.Bits.LeaderboardsTest.get(token: "some_auth_token")
+Teac.Api.Bits.Leaderboards.get(token: "some_auth_token")
 ```
 
 Though the documentation is still a work in progress you will want to check to see if the given endpoint requires a User or App token. 
