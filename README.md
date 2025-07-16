@@ -14,12 +14,13 @@ https://hexdocs.pm/teac/readme.html
 ## Installation
 
 This is currently a work in progress.
+While in development its highly recomended to use the github mix package as there are rapid changes coming in.
 
 ```elixir
 def deps do
   [
-    {:teac, "~> 0.1.0"}
-    # {:teac, git: "https://github.com/fullstack-ing/teac"}
+    # {:teac, "~> 0.1.0"}
+    {:teac, git: "https://github.com/fullstack-ing/teac"}
   ]
 end
 ```
