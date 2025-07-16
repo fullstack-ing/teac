@@ -44,6 +44,19 @@ config :teac,
   oauth_callback_uri: System.get_env("TWITCH_OAUTH_CALLBACK_URI")
 ```
 
+## Basic Usage. 
+
+All the REST API endpoints are namedspaced under Teac.Api
+Thus:
+```elixir
+Teac.Api.Bits.LeaderboardsTest.get(token: "some_auth_token")
+```
+
+Though the documentation is still a work in progress you will want to check to see if the given endpoint requires a User or App token. 
+Some endpoints can use either or but will limit the information if its in regards to the user in question (IE: their email)
+Some endpoints are exclusively app flow token, and other exclusively user flow tokens. Again check the endpoints documentation. 
+https://dev.twitch.tv/docs/api/reference/
+
 ## Example Application using this lib.
 https://github.com/fullstack-ing/teac_example
 
